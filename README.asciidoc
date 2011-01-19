@@ -1,0 +1,18 @@
+slock (custom distribution)
+===========================
+Taylor M. Hedberg <tmhedberg@gmail.com>
+
+This is a customized distribution of slock, the simple X11 screen locker from
+suckless.org.
+
+Changes from the base distribution include:
+
+* +config.mk+ tweaked for Arch Linux
+** Updated paths to X11 libs and headers
+** Set compiler to GCC (This probably doesn't matter)
+* Removed the requirement to grab the mouse cursor before locking. This didn't 
+  play nicely with another utility I use (hhp), which grabs the mouse cursor
+  and hides it after a few seconds of inactivity.
+
+The original +README+ included with the suckless.org distribution is provided as 
++README.orig+.
