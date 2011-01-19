@@ -6,8 +6,8 @@ VERSION = 0.9
 # paths
 PREFIX = /usr/local
 
-X11INC = /usr/X11R6/include
-X11LIB = /usr/X11R6/lib
+X11INC = /usr/include/X11
+X11LIB = /usr/lib/X11
 
 # includes and libs
 INCS = -I. -I/usr/include -I${X11INC}
@@ -22,7 +22,7 @@ LDFLAGS = -s ${LIBS}
 # On OpenBSD and Darwin remove -lcrypt from LIBS
 
 # compiler and linker
-CC = cc
+CC = gcc
 
 # Install mode. On BSD systems MODE=2755 and GROUP=auth
 # On others MODE=4755 and GROUP=root
