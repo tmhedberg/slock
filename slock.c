@@ -106,20 +106,12 @@ main(int argc, char **argv) {
 	XDefineCursor(dpy, w, invisible);
 	XMapRaised(dpy, w);
 	for(len = 1000; len; len--) {
-		if(XGrabPointer(dpy, root, False, ButtonPressMask | ButtonReleaseMask | PointerMotionMask,
-			GrabModeAsync, GrabModeAsync, None, invisible, CurrentTime) == GrabSuccess)
+		if(XGrabKeyboard(dpy, root, True, GrabModeAsync, GrabModeAsync, CurrentTime)
+			== GrabSuccess)
 			break;
 		usleep(1000);
 	}
-	if((running = running && (len > 0))) {
-		for(len = 1000; len; len--) {
-			if(XGrabKeyboard(dpy, root, True, GrabModeAsync, GrabModeAsync, CurrentTime)
-				== GrabSuccess)
-				break;
-			usleep(1000);
-		}
-		running = (len > 0);
-	}
+	running = (len > 0);
 	len = 0;
 	XSync(dpy, False);
 
