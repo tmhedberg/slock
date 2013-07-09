@@ -166,7 +166,7 @@ unlockscreen(Display *dpy, Lock *lock) {
 }
 
 static Lock *
-lockscreen(Display *dpy, int screen) {
+lockscreen(Display *dpy, int screen, unsigned width, unsigned height) {
 	char curs[] = {0, 0, 0, 0, 0, 0, 0, 0};
 	unsigned int len;
 	Lock *lock;
@@ -188,9 +188,19 @@ lockscreen(Display *dpy, int screen) {
 	/* init */
 	wa.override_redirect = 1;
 	wa.background_pixel = BlackPixel(dpy, lock->screen);
-	lock->win = XCreateWindow(dpy, lock->root, 0, 0, DisplayWidth(dpy, lock->screen), DisplayHeight(dpy, lock->screen),
-			0, DefaultDepth(dpy, lock->screen), CopyFromParent,
-			DefaultVisual(dpy, lock->screen), CWOverrideRedirect | CWBackPixel, &wa);
+	lock->win =
+    XCreateWindow(dpy,
+                  lock->root,
+                  0,
+                  0,
+                  width == 0 ? DisplayWidth(dpy, lock->screen) : width,
+                  height == 0 ? DisplayHeight(dpy, lock->screen) : height,
+                  0,
+                  DefaultDepth(dpy, lock->screen),
+                  CopyFromParent,
+                  DefaultVisual(dpy, lock->screen),
+                  CWOverrideRedirect | CWBackPixel,
+                  &wa);
 	XAllocNamedColor(dpy, DefaultColormap(dpy, lock->screen), COLOR2, &color, &dummy);
 	lock->colors[1] = color.pixel;
 	XAllocNamedColor(dpy, DefaultColormap(dpy, lock->screen), COLOR1, &color, &dummy);
@@ -238,10 +248,14 @@ main(int argc, char **argv) {
 #endif
 	Display *dpy;
 	int screen;
+  unsigned width = NULL, height = NULL;
 
 	if((argc == 2) && !strcmp("-v", argv[1]))
 		die("slock-%s, © 2006-2012 Anselm R Garbe\n", VERSION);
-	else if(argc != 1)
+  else if (argc == 4 && !strcmp("-d", argv[1])) {
+    width = atoi(argv[2]);
+    height = atoi(argv[3]);
+  } else if(argc != 1)
 		usage();
 
 	if(!getpwuid(getuid()))
@@ -260,7 +274,7 @@ main(int argc, char **argv) {
 		die("slock: malloc: %s", strerror(errno));
 	int nlocks = 0;
 	for(screen = 0; screen < nscreens; screen++) {
-		if ( (locks[screen] = lockscreen(dpy, screen)) != NULL)
+		if ( (locks[screen] = lockscreen(dpy, screen, width, height)) != NULL)
 			nlocks++;
 	}
 	XSync(dpy, False);
