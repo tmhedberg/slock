@@ -237,7 +237,7 @@ lockscreen(Display *dpy, int screen, unsigned width, unsigned height) {
 
 static void
 usage(void) {
-	fprintf(stderr, "usage: slock [-v]\n");
+	fprintf(stderr, "usage: slock [-v | -d <width> <height>]\n");
 	exit(EXIT_FAILURE);
 }
 
