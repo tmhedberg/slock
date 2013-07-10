@@ -241,7 +241,7 @@ main(int argc, char **argv) {
 #endif
 	Display *dpy;
 	int screen;
-	unsigned width = NULL, height = NULL;
+	unsigned width = 0, height = 0;
 
 	if((argc == 2) && !strcmp("-v", argv[1]))
 		die("slock-%s, © 2006-2012 Anselm R Garbe\n", VERSION);
